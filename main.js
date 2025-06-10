@@ -1,7 +1,10 @@
-//splash screen removal after 4.5 seconds
+// Splash screen removal after 4.5 seconds
 setTimeout(() => {
     document.getElementById("splashScreen")?.remove();
-  }, 4500); 
+}, 4500);
+
+
+
 // Initialize GSAP and ScrollTrigger
 gsap.registerPlugin(ScrollTrigger);
 
@@ -38,20 +41,18 @@ document.addEventListener('mousemove', (e) => {
     });
 });
 
-// Handle cursor interactions
 document.addEventListener('mouseenter', (e) => {
     if (e.target.matches('button, a, input, textarea')) {
-        gsap.to(cursor, { scale: 1.5, opacity: 0.7, duration: 0.2 });
-        gsap.to(cursorFollower, { scale: 1.5, opacity: 0.3, duration: 0.3 });
+        gsap.to(cursorFollower, { opacity: 0.15, duration: 0.2 });
     }
 }, true);
 
 document.addEventListener('mouseleave', (e) => {
     if (e.target.matches('button, a, input, textarea')) {
-        gsap.to(cursor, { scale: 1, opacity: 1, duration: 0.2 });
-        gsap.to(cursorFollower, { scale: 1, opacity: 0.5, duration: 0.3 });
+        gsap.to(cursorFollower, { opacity: 0.3, duration: 0.2 });
     }
 }, true);
+
 
 // Navbar scroll effect
 window.addEventListener('scroll', () => {
@@ -190,11 +191,33 @@ document.addEventListener('DOMContentLoaded', () => {
         );
     });
 
+
     // About section animations
+    const aboutTitle = document.querySelector('.about-title');
     const aboutObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 // Animate title
+                const abouttitleChars = aboutTitle.querySelectorAll('span');
+                gsap.fromTo(abouttitleChars,
+
+                    {
+                        y: 100,
+                        opacity: 0,
+                        rotateX: -90,
+                        filter: 'blur(6px)'
+                    },
+                    {
+                        y: 0,
+                        opacity: 1,
+                        rotateX: 0,
+                        filter: 'blur(0px)',
+                        stagger: 0.06,      // adjust for speed between letters
+                        duration: 0.8,
+                        ease: 'back.out(1.7)',
+                        delay: 0.3
+                    }
+                );
                 gsap.fromTo('.about-title',
                     { opacity: 0, x: -70, skewX: 20 },
                     { opacity: 1, x: 0, skewX: 0, duration: 0.8, ease: 'power3.out' }
@@ -235,6 +258,31 @@ document.addEventListener('DOMContentLoaded', () => {
                         delay: 0.6
                     }
                 );
+
+                const statNumbers = document.querySelectorAll('.stats-number');
+                statNumbers.forEach(number => {
+                    let finalValueText = number.textContent.trim();
+                    let hasPlus = finalValueText.includes('+');
+                    let cleanNumber = finalValueText.replace('+', '').replace(/,/g, '');
+                    let finalValue = parseInt(cleanNumber);
+
+                    // GSAP tween object
+                    let counter = { val: 0 };
+
+                    gsap.to(counter, {
+                        val: finalValue,
+                        duration: 5,
+                        ease: "power3.out",
+                        onUpdate: () => {
+                            let displayValue = Math.floor(counter.val);
+                            // Add comma formatting if original had comma
+                            if (finalValueText.includes(',')) {
+                                displayValue = displayValue.toLocaleString();
+                            }
+                            number.textContent = displayValue + (hasPlus ? '+' : '');
+                        }
+                    });
+                });
 
                 // Animate image
                 gsap.fromTo('.about-image',
@@ -394,10 +442,31 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    const practiceTitle = document.querySelector('.practice-title');
     const practiceObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 // Animate title
+                const practiceTitleChars = practiceTitle.querySelectorAll('span');
+                gsap.fromTo(practiceTitleChars,
+
+                    {
+                        y: 100,
+                        opacity: 0,
+                        rotateX: -90,
+                        filter: 'blur(6px)'
+                    },
+                    {
+                        y: 0,
+                        opacity: 1,
+                        rotateX: 0,
+                        filter: 'blur(0px)',
+                        stagger: 0.06,      // adjust for speed between letters
+                        duration: 0.8,
+                        ease: 'back.out(1.7)',
+                        delay: 0.3
+                    }
+                );
                 gsap.fromTo('.practice-title',
                     { opacity: 0, x: -70, skewX: 20 },
                     { opacity: 1, x: 0, skewX: 0, duration: 0.8, ease: 'power3.out' }
@@ -465,10 +534,30 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Team section animations
+    const teamTitle = document.querySelector('.team-title');
     const teamObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 // Animate title
+                const teamTitleChars = teamTitle.querySelectorAll('span');
+                gsap.fromTo(teamTitleChars,
+                    {
+                        y: 100,
+                        opacity: 0,
+                        rotateX: -90,
+                        filter: 'blur(6px)'
+                    },
+                    {
+                        y: 0,
+                        opacity: 1,
+                        rotateX: 0,
+                        filter: 'blur(0px)',
+                        stagger: 0.06,      // adjust for speed between letters
+                        duration: 0.8,
+                        ease: 'back.out(1.7)',
+                        delay: 0.3
+                    }
+                );
                 gsap.fromTo('.team-title',
                     { opacity: 0, y: 30 },
                     { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }
@@ -511,10 +600,31 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Contact section animations
+    const contactTitle = document.querySelector('.contact-title');
+    const contactFormElements = document.querySelectorAll('.contact-form h3, .contact-form .form-group, .contact-form .form-row, .contact-form button');
     const contactObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 // Animate title
+                const contactTitleChars = contactTitle.querySelectorAll('span');
+                gsap.fromTo(contactTitleChars,
+                    {
+                        y: 100,
+                        opacity: 0,
+                        rotateX: -90,
+                        filter: 'blur(6px)'
+                    },
+                    {
+                        y: 0,
+                        opacity: 1,
+                        rotateX: 0,
+                        filter: 'blur(0px)',
+                        stagger: 0.06,      // adjust for speed between letters
+                        duration: 0.8,
+                        ease: 'back.out(1.7)',
+                        delay: 0.3
+                    }
+                );
                 gsap.fromTo('.contact-title',
                     { opacity: 0, y: 30 },
                     { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }
@@ -553,6 +663,24 @@ document.addEventListener('DOMContentLoaded', () => {
     if (contactSection) {
         contactObserver.observe(contactSection);
     }
+
+    const formObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      gsap.to(contactFormElements, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power3.out',
+        stagger: 0.15
+      });
+      formObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+
+// Observe the contact form container
+formObserver.observe(document.querySelector('.contact-form'));
 
     // Animate circles on scroll
     const circleObserver = new IntersectionObserver((entries) => {
